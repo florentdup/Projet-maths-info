@@ -6,7 +6,7 @@ import autograd
 f=lambda x,y:x**2+y**2-np.exp(-(x-1)**2-(y-1)**2)
 f=lambda x,y:x**2+y**2
 
-X,Y=np.linspace(-1,1,100),np.linspace(-1,1,100)
+X,Y=np.linspace(0,1,100),np.linspace(0,1,100)
 
 X,Y=np.meshgrid(X,Y)
 
@@ -30,35 +30,42 @@ def grad_f(x, y):
     return np.r_[g(f, 0)(x, y), g(f, 1)(x, y)]
 
 
-
-
 def find_seed(g, c=0.0, eps=2**(-26)):
-    if g(0)*g(1)<=0:
+    if g(0,0)*g(0,1)<=0:
         tmp=lambda x : g(0,x)-c  
         return dichotomie(tmp,0,1,2**-26)
     else:
         return None
 
+
+
 def simple_contour(f, c=0.0, delta=0.01):
     X,Y=[],[]
     d0=find_seed(f,c)
     if d0!=None:
-        x,y=0,d0
-        while 0<x<1 and 0<y<1:
+        x,y=0.0001,d0
+        gradient=grad_f(x,y)
+        s = 1
+        if gradient[1] < 0:
+            s = -1
+        while 0<=x<1 and 0<=y<1:
             X.append(x)
             Y.append(y)
             gradient=grad_f(x,y)
-            gradient_orthogonal=[y,-x]
-            
-
+            n=[gradient[1],-gradient[0]]
+            norme=s*np.sqrt(n[0]**2+n[1]**2)
+            if norme!=0:
+                x+=delta/norme*n[0]
+                y+=delta/norme*n[1]
+            else:
+                break
         
-        
-    if (True):
-        pass
-    return x, y
+    return X,Y
 
+X_l,Y_l=simple_contour(f,0.5)
+plt.plot(X_l,Y_l,"*",color="black")
 
-
+ 
 
 plt.show()
 
