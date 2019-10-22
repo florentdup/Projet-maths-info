@@ -31,7 +31,7 @@ def grad_f(x, y):
 
 
 def find_seed(g, c=0.0, eps=2**(-26)):
-    if g(0,0)*g(0,1)<=0:
+    if (g(0,0)-c)*(g(0,1)-c)<0:
         tmp=lambda x : g(0,x)-c  
         return dichotomie(tmp,0,1,2**-26)
     else:
@@ -62,8 +62,25 @@ def simple_contour(f, c=0.0, delta=0.01):
         
     return X,Y
 
-X_l,Y_l=simple_contour(f,0.5)
+X_l,Y_l=simple_contour(f,0.01)
 plt.plot(X_l,Y_l,"*",color="black")
+
+
+
+def find_seed_4(g, c=0.0, eps=2**(-26)):
+    if (g(0,0)-c)*(g(0,1)-c)<0:
+        tmp=lambda x : g(0,x)-c  
+        return dichotomie(tmp,0,1,2**-26)
+    else:
+        return None
+
+def case(f,c,x0,y0,x1,y1,delta):
+    return X,Y
+
+
+def contour(f, c=0.0, xc=[0.0,1.0], yc=[0.0,1.0], delta=0.01):
+...
+return xs, ys
 
  
 
