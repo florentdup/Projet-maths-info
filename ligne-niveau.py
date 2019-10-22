@@ -1,8 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import bisect
+import autograd
 
 f=lambda x,y:x**2+y**2-np.exp(-(x-1)**2-(y-1)**2)
+f=lambda x,y:x**2+y**2
 
 X,Y=np.linspace(-1,1,100),np.linspace(-1,1,100)
 
@@ -23,6 +25,11 @@ def dichotomie(f,a,b,epsilon):
             g=c
     return c
 
+def grad_f(x, y):
+    g = autograd.grad
+    return np.r_[g(f, 0)(x, y), g(f, 1)(x, y)]
+
+
 
 
 def find_seed(g, c=0.0, eps=2**(-26)):
@@ -33,11 +40,20 @@ def find_seed(g, c=0.0, eps=2**(-26)):
         return None
 
 def simple_contour(f, c=0.0, delta=0.01):
-    X,Y=np.array([]),np.array([])
+    X,Y=[],[]
     d0=find_seed(f,c)
     if d0!=None:
+        x,y=0,d0
+        while 0<x<1 and 0<y<1:
+            X.append(x)
+            Y.append(y)
+            gradient=grad_f(x,y)
+            gradient_orthogonal=[y,-x]
+            
+
         
-    if (pass):
+        
+    if (True):
         pass
     return x, y
 
