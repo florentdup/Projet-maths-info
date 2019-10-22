@@ -116,8 +116,9 @@ def case(f,c,x0,y0,x1,y1,delta):
 def contour(f, c=0.0, xc=[0.0,1.0], yc=[0.0,1.0], delta=0.01):
     X, Y = [], []
     n = len(xc) - 1
-    for i in range(n):
-        for j in range(n):
+    
+    for i in range(len(xc) - 1):
+        for j in range(len(yc) - 1):
             a,b = case(f,c,xc[i],yc[j],xc[i+1],yc[j+1],delta)
             X += a
             Y += b
@@ -125,18 +126,19 @@ def contour(f, c=0.0, xc=[0.0,1.0], yc=[0.0,1.0], delta=0.01):
     return X,Y
 
 
-case_x=10
-case_y=10
-X_l,Y_l=contour(f,0.0,list(np.linspace(-2,3,case_x)),list(np.linspace(-1,2,case_y)),0.001)
+case_x=100
+case_y=5
+delta=0.001
+X_l,Y_l=contour(f,0.0,list(np.linspace(-2,3,case_x)),list(np.linspace(-1,2,case_y)),delta)
 plt.plot(X_l,Y_l,".",color="black")
 
-X_l,Y_l=contour(f,0.5,list(np.linspace(-2,3,case_x)),list(np.linspace(-1,2,case_y)),0.001)
+X_l,Y_l=contour(f,0.5,list(np.linspace(-2,3,case_x)),list(np.linspace(-1,2,case_y)),delta)
 plt.plot(X_l,Y_l,".",color="black")
 
-X_l,Y_l=contour(f,-0.5,list(np.linspace(-2,3,case_x)),list(np.linspace(-1,2,case_y)),0.001)
+X_l,Y_l=contour(f,-0.5,list(np.linspace(-2,3,case_x)),list(np.linspace(-1,2,case_y)),delta)
 plt.plot(X_l,Y_l,".",color="black")
 
-X_l,Y_l=contour(f,1.5,list(np.linspace(-2,3,case_x)),list(np.linspace(-1,2,case_y)),0.001)
+X_l,Y_l=contour(f,1.5,list(np.linspace(-2,3,case_x)),list(np.linspace(-1,2,case_y)),delta)
 plt.plot(X_l,Y_l,".",color="black")
 
 X_l,Y_l=contour(f,-1.5,list(np.linspace(-2,3,case_x)),list(np.linspace(-1,2,case_y)),0.001)
