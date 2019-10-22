@@ -1,12 +1,14 @@
-import numpy as np
+import autograd
+import autograd.numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import bisect
-import autograd
 
-f=lambda x,y:x**2+y**2-np.exp(-(x-1)**2-(y-1)**2)
-f=lambda x,y:-x**2-y**2
 
-X,Y=np.linspace(0,1,100),np.linspace(0,1,100)
+
+#f=lambda x,y:2*(np.exp(-x**2-y**2)-np.exp(-(x-1)**2-(y-1)**2))
+f=lambda x,y:x**2+y**2
+
+X,Y=np.linspace(-2,3,100),np.linspace(-1,2,100)
 
 X,Y=np.meshgrid(X,Y)
 
@@ -68,7 +70,7 @@ def simple_contour(f, c=0.0, delta=0.01):
 
 
 
-def find_seed_4(g,x0,y0,x1,y1,c=0.0, eps=2**(-26)):
+def find_seed_4(g,c,x0,y0,x1,y1, eps=2**(-26)):
     if (g(x0,y0)-c)*(g(x0,y1)-c)<0:
         tmp=lambda x : g(x0,x)-c  
         return x0,dichotomie(tmp,y0,y1,2**-26)
@@ -86,21 +88,21 @@ def find_seed_4(g,x0,y0,x1,y1,c=0.0, eps=2**(-26)):
 
 def case(f,c,x0,y0,x1,y1,delta):
     X,Y=[],[]
-    x,y=find_seed_4(f,c)
+    x,y=find_seed_4(f,c,x0,y0,x1,y1)
     if x!=None:
-        gradient=grad_f(x,y)
+        gradient=grad_f(x+0.00001,y+0.00001)
         n=[gradient[1],-gradient[0]]
-        norme=s*np.sqrt(n[0]**2+n[1]**2)
+        norme=np.sqrt(n[0]**2+n[1]**2)
         if norme!=0:
             x+=delta/norme*n[0]
             y+=delta/norme*n[1]            
         s = -1
-        if x0<=x<x1 and y0<=y<y1:
+        if x0<=x<=x1 and y0<=y<=y1:
             s = 1
-        while x0<=x<x1 and y0<=y<y1:
+        while x0<=x<=x1 and y0<=y<=y1:
             X.append(x)
             Y.append(y)
-            gradient=grad_f(x,y)
+            gradient=grad_f(x+0.00001,y+0.00001)
             n=[gradient[1],-gradient[0]]
             norme=s*np.sqrt(n[0]**2+n[1]**2)
             if norme!=0:
@@ -121,6 +123,25 @@ def contour(f, c=0.0, xc=[0.0,1.0], yc=[0.0,1.0], delta=0.01):
             Y += b
 
     return X,Y
+
+
+case_x=10
+case_y=10
+X_l,Y_l=contour(f,0.0,list(np.linspace(-2,3,case_x)),list(np.linspace(-1,2,case_y)),0.001)
+plt.plot(X_l,Y_l,".",color="black")
+
+X_l,Y_l=contour(f,0.5,list(np.linspace(-2,3,case_x)),list(np.linspace(-1,2,case_y)),0.001)
+plt.plot(X_l,Y_l,".",color="black")
+
+X_l,Y_l=contour(f,-0.5,list(np.linspace(-2,3,case_x)),list(np.linspace(-1,2,case_y)),0.001)
+plt.plot(X_l,Y_l,".",color="black")
+
+X_l,Y_l=contour(f,1.5,list(np.linspace(-2,3,case_x)),list(np.linspace(-1,2,case_y)),0.001)
+plt.plot(X_l,Y_l,".",color="black")
+
+X_l,Y_l=contour(f,-1.5,list(np.linspace(-2,3,case_x)),list(np.linspace(-1,2,case_y)),0.001)
+plt.plot(X_l,Y_l,".",color="black")
+#cont=plt.contour(Z,[0.01])
 
  
 
