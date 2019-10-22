@@ -112,8 +112,15 @@ def case(f,c,x0,y0,x1,y1,delta):
 
 
 def contour(f, c=0.0, xc=[0.0,1.0], yc=[0.0,1.0], delta=0.01):
+    X, Y = [], []
+    n = len(xc) - 1
+    for i in range(n):
+        for j in range(n):
+            a,b = case(f,c,xc[i],yc[j],xc[i+1],yc[j+1],delta)
+            X += a
+            Y += b
 
-    return xs, ys
+    return X,Y
 
  
 
